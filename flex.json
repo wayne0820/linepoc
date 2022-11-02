@@ -81,6 +81,22 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "button",
+              "action": {
+                "type": "message",
+                "label": "action",
+                "text": "hello"
+              }
+            },
+            {
+              "type": "button",
+              "action": {
+                "type": "message",
+                "label": "action",
+                "text": "hello"
+              }
             }
           ],
           "spacing": "sm",
@@ -170,7 +186,12 @@
             }
           ],
           "spacing": "sm",
-          "paddingAll": "13px"
+          "paddingAll": "13px",
+          "action": {
+            "type": "postback",
+            "label": "action",
+            "data": "hello"
+          }
         }
       },
       {

@@ -15,6 +15,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -77,25 +78,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					log.Println("Quota err:", err)
 				}*/
 
-				container := &linebot.BubbleContainer{
-					Type: linebot.FlexContainerTypeBubble,
-					Body: &linebot.BoxComponent{
-						Type:   linebot.FlexComponentTypeBox,
-						Layout: linebot.FlexBoxLayoutTypeHorizontal,
-						Contents: []linebot.FlexComponent{
-							&linebot.TextComponent{
-								Type: linebot.FlexComponentTypeText,
-								Text: "Hello,",
-							},
-							&linebot.TextComponent{
-								Type: linebot.FlexComponentTypeText,
-								Text: "World!",
-							},
-						},
-					},
-				}
-
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("123", container)).Do(); err != nil {
+				file, _ := ioutil.ReadFile("flex.json")
+				contenter, _ := linebot.UnmarshalFlexMessageJSON(file)
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("123", contenter)).Do(); err != nil {
 					log.Println(err)
 				}
 
