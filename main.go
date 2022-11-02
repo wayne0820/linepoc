@@ -51,6 +51,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			switch message := event.Message.(type) {
 			// Handle only on text message
 			case *linebot.TextMessage:
+				log.Println("TextMessage recevied")
 				// GetMessageQuota: Get how many remain free tier push message quota you still have this month. (maximum 500)
 				quota, err := bot.GetMessageQuota().Do()
 				if err != nil {
@@ -64,6 +65,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 			// Handle only on Sticker message
 			case *linebot.StickerMessage:
+				log.Println("StickerMessage recevied")
 				var kw string
 				for _, k := range message.Keywords {
 					kw = kw + "," + k
