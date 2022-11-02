@@ -95,7 +95,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					},
 				}
 
-				bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("123", container))
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("123", container)).Do(); err != nil {
+					log.Println(err)
+				}
 
 				/*
 					// message.ID: Msg unique ID
