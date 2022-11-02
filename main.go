@@ -13,11 +13,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
@@ -25,6 +25,7 @@ import (
 var bot *linebot.Client
 
 func main() {
+
 	var err error
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
 	log.Println("Bot:", bot, " err:", err)
@@ -32,6 +33,21 @@ func main() {
 	port := os.Getenv("PORT")
 	addr := fmt.Sprintf(":%s", port)
 	http.ListenAndServe(addr, nil)
+}
+
+func readLines(path string) (string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	var lines string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines += scanner.Text()
+	}
+	return lines, scanner.Err()
 }
 
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -48,20 +64,45 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	for _, event := range events {
 		if event.Type == linebot.EventTypeMessage {
+
+			log.Println("user id:", event.Source.UserID)
+
 			switch message := event.Message.(type) {
 			// Handle only on text message
 			case *linebot.TextMessage:
 				log.Println("TextMessage recevied")
 				// GetMessageQuota: Get how many remain free tier push message quota you still have this month. (maximum 500)
-				quota, err := bot.GetMessageQuota().Do()
+				/*quota, err := bot.GetMessageQuota().Do()
 				if err != nil {
 					log.Println("Quota err:", err)
+				}*/
+
+				container := &linebot.BubbleContainer{
+					Type: linebot.FlexContainerTypeBubble,
+					Body: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeHorizontal,
+						Contents: []linebot.FlexComponent{
+							&linebot.TextComponent{
+								Type: linebot.FlexComponentTypeText,
+								Text: "Hello,",
+							},
+							&linebot.TextComponent{
+								Type: linebot.FlexComponentTypeText,
+								Text: "World!",
+							},
+						},
+					},
 				}
-				// message.ID: Msg unique ID
-				// message.Text: Msg text
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("msg ID:"+message.ID+":"+"Get:"+message.Text+" , \n OK! remain message:"+strconv.FormatInt(quota.Value, 10))).Do(); err != nil {
-					log.Print(err)
-				}
+
+				bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("123", container))
+
+				/*
+					// message.ID: Msg unique ID
+					// message.Text: Msg text
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("msg ID:"+message.ID+":"+"Get:"+message.Text+" , \n OK! remain message:"+strconv.FormatInt(quota.Value, 10))).Do(); err != nil {
+						log.Print(err)
+					}*/
 
 			// Handle only on Sticker message
 			case *linebot.StickerMessage:
