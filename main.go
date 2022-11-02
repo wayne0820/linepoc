@@ -69,11 +69,25 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					kw = kw + "," + k
 				}
 
-				outStickerResult := fmt.Sprintf("收到貼圖訊息: %s, pkg: %s kw: %s  text: %s", message.StickerID, message.PackageID, kw, message.Text)
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outStickerResult)).Do(); err != nil {
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewStickerMessage("1", "1")).Do(); err != nil {
 					log.Print(err)
 				}
+
+				/*
+					outStickerResult := fmt.Sprintf("收到貼圖訊息: %s, pkg: %s kw: %s  text: %s", message.StickerID, message.PackageID, kw, message.Text)
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outStickerResult)).Do(); err != nil {
+						log.Print(err)
+					}*/
+
+			case *linebot.AudioMessage:
+			case *linebot.FileMessage:
+			case *linebot.FlexMessage:
+			case *linebot.ImageMessage:
+			case *linebot.LocationMessage:
+			case *linebot.ImagemapMessage:
+			case *linebot.VideoMessage:
 			}
+
 		}
 	}
 }
