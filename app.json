@@ -13,11 +13,11 @@
   ],
   "env": {
     "ChannelAccessToken": {
-      "description": "veY5B5x7plNaL//RGPjHKKQEFaSHPnTrseBYehnZjUR9fMo5U7IlZHDTLY0N+cbNAek/0lLrsrL+7czxCN+8rvVLT4C+JTWtYts97Xh7ExsDwQK5xKjODuy0N+WTm9ed7HgENqaxUydvCw4uS9CAlQdB04t89/1O/w1cDnyilFU=",
+      "description": "Channel Access Token",
       "required": true
     },
     "ChannelSecret": {
-      "description": "d0009b595f84e11a4c3c61fcf73ca57d",
+      "description": "Channel Secret",
       "required": true
     }
   }
