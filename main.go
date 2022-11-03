@@ -64,6 +64,19 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, event := range events {
+
+		if event.Type == linebot.EventTypeJoin {
+
+		}
+
+		if event.Type == linebot.EventTypePostback {
+			log.Println(event.Postback.Data)
+
+			if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("post back data:"+event.Postback.Data)).Do(); err != nil {
+				log.Print(err)
+			}
+		}
+
 		if event.Type == linebot.EventTypeMessage {
 
 			log.Println("user id:", event.Source.UserID)
