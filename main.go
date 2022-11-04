@@ -21,12 +21,15 @@ import (
 	"os"
 	"time"
 
+	"github.com/kkdai/LineBotTemplate/tron"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
 
 var bot *linebot.Client
 
 func main() {
+
+	initSettlement()
 
 	var err error
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
@@ -36,6 +39,18 @@ func main() {
 	addr := fmt.Sprintf(":%s", port)
 	http.ListenAndServe(addr, nil)
 	fmt.Println(123)
+}
+
+func initSettlement() {
+	go func() {
+		for {
+			hash, err := tron.GetNewBlock()
+			if err != nil {
+				log.Println(err)
+			}
+			log.Println("hash:" + hash)
+		}
+	}()
 }
 
 func readLines(path string) (string, error) {

@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+
+
 func GetBSResult(hash string) (bool, error) {
 	hash = replaceEngChar(hash)
 	ln := len(hash)
