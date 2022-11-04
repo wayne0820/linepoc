@@ -19,7 +19,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/line/line-bot-sdk-go/v7/linebot"
@@ -89,11 +88,12 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			case *linebot.TextMessage:
 				log.Println("TextMessage recevied")
 				// GetMessageQuota: Get how many remain free tier push message quota you still have this month. (maximum 500)
-				quota, err := bot.GetMessageQuota().Do()
+				/*quota, err := bot.GetMessageQuota().Do()
 				if err != nil {
 					log.Println("Quota err:", err)
-				}
+				}*/
 
+				time.Sleep(10 * time.Second)
 				file, _ := ioutil.ReadFile("flex.json")
 				contenter, _ := linebot.UnmarshalFlexMessageJSON(file)
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("123", contenter)).Do(); err != nil {
@@ -103,9 +103,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				time.Sleep(10 * time.Second)
 				// message.ID: Msg unique ID
 				// message.Text: Msg text
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("msg ID:"+message.ID+":"+"Get:"+message.Text+" , \n OK! remain message:"+strconv.FormatInt(quota.Value, 10))).Do(); err != nil {
-					log.Print(err)
-				}
+
+				/*
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("msg ID:"+message.ID+":"+"Get:"+message.Text+" , \n OK! remain message:"+strconv.FormatInt(quota.Value, 10))).Do(); err != nil {
+						log.Print(err)
+					}*/
 
 			// Handle only on Sticker message
 			case *linebot.StickerMessage:
