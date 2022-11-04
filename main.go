@@ -19,6 +19,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/kkdai/LineBotTemplate/game"
@@ -106,6 +107,18 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			switch message := event.Message.(type) {
 			// Handle only on text message
 			case *linebot.TextMessage:
+
+				if message.Text == "reset" {
+
+					requestURL := fmt.Sprintf("https://api.line.me/v2/bot/user/%s/richmenu/richmenu-28a54a0342c5da579ec694cebf92db0c", event.Source.UserID)
+					req, err := http.NewRequest(http.MethodPost, requestURL, strings.NewReader("name=test"))
+					if err != nil {
+						log.Println(err)
+					}
+					req.Header.Set("Authorization", "Bearer veY5B5x7plNaL//RGPjHKKQEFaSHPnTrseBYehnZjUR9fMo5U7IlZHDTLY0N+cbNAek/0lLrsrL+7czxCN+8rvVLT4C+JTWtYts97Xh7ExsDwQK5xKjODuy0N+WTm9ed7HgENqaxUydvCw4uS9CAlQdB04t89/1O/w1cDnyilFU=")
+
+				}
+
 				log.Println("TextMessage recevied")
 				// GetMessageQuota: Get how many remain free tier push message quota you still have this month. (maximum 500)
 				/*quota, err := bot.GetMessageQuota().Do()
