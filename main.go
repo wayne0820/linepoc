@@ -95,6 +95,26 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypePostback {
 			log.Println(event.Postback.Data)
 
+			if event.Postback.Data == "pb-big" || event.Postback.Data == "pb-small" {
+				log.Println("process rich menu redirect")
+				client := &http.Client{}
+				requestURL := fmt.Sprintf("https://api.line.me/v2/bot/user/%s/richmenu/richmenu-8fe722457190feb7cb3ea8b71b9296b4", event.Source.UserID)
+				req, err := http.NewRequest(http.MethodPost, requestURL, strings.NewReader("name=test"))
+				if err != nil {
+					log.Println(err)
+				}
+				req.Header.Set("Authorization", "Bearer veY5B5x7plNaL//RGPjHKKQEFaSHPnTrseBYehnZjUR9fMo5U7IlZHDTLY0N+cbNAek/0lLrsrL+7czxCN+8rvVLT4C+JTWtYts97Xh7ExsDwQK5xKjODuy0N+WTm9ed7HgENqaxUydvCw4uS9CAlQdB04t89/1O/w1cDnyilFU=")
+				time.Sleep(1 * time.Second)
+				resp, err := client.Do(req)
+				if err != nil {
+					log.Println(err)
+				}
+
+				defer resp.Body.Close()
+
+				log.Println("process rich menu redirect done")
+			}
+
 			if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("post back data:"+event.Postback.Data)).Do(); err != nil {
 				log.Print(err)
 			}
@@ -107,25 +127,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			switch message := event.Message.(type) {
 			// Handle only on text message
 			case *linebot.TextMessage:
-
-				if message.Text == "reset" {
-					log.Println("process rich menu redirect")
-					client := &http.Client{}
-					requestURL := fmt.Sprintf("https://api.line.me/v2/bot/user/%s/richmenu/richmenu-28a54a0342c5da579ec694cebf92db0c", event.Source.UserID)
-					req, err := http.NewRequest(http.MethodPost, requestURL, strings.NewReader("name=test"))
-					if err != nil {
-						log.Println(err)
-					}
-					req.Header.Set("Authorization", "Bearer veY5B5x7plNaL//RGPjHKKQEFaSHPnTrseBYehnZjUR9fMo5U7IlZHDTLY0N+cbNAek/0lLrsrL+7czxCN+8rvVLT4C+JTWtYts97Xh7ExsDwQK5xKjODuy0N+WTm9ed7HgENqaxUydvCw4uS9CAlQdB04t89/1O/w1cDnyilFU=")
-					resp, err := client.Do(req)
-					if err != nil {
-						log.Println(err)
-					}
-
-					defer resp.Body.Close()
-
-					log.Println("process rich menu redirect done")
-				}
 
 				log.Println("TextMessage recevied", message.Text)
 				// GetMessageQuota: Get how many remain free tier push message quota you still have this month. (maximum 500)
