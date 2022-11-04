@@ -131,7 +131,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if message.Text == "reset" {
 					log.Println("process rich menu redirect")
 					client := &http.Client{}
-					requestURL := fmt.Sprintf("https://api.line.me/v2/bot/user/%s/richmenu/richmenu-8fe722457190feb7cb3ea8b71b9296b4", event.Source.UserID)
+					requestURL := fmt.Sprintf("https://api.line.me/v2/bot/user/%s/richmenu/richmenu-28a54a0342c5da579ec694cebf92db0c", event.Source.UserID)
 					req, err := http.NewRequest(http.MethodPost, requestURL, strings.NewReader("name=test"))
 					if err != nil {
 						log.Println(err)
