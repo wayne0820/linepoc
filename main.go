@@ -49,6 +49,7 @@ func initSettlement() {
 				log.Println(err)
 			}
 			log.Println("hash:" + hash)
+			time.Sleep(10 * time.Second)
 		}
 	}()
 }
