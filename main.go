@@ -21,14 +21,16 @@ import (
 	"os"
 	"time"
 
+	"github.com/kkdai/LineBotTemplate/game"
 	"github.com/kkdai/LineBotTemplate/tron"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
 
 var bot *linebot.Client
+var chash chan string
 
 func main() {
-
+	game.Init()
 	initSettlement()
 
 	var err error
@@ -42,6 +44,7 @@ func main() {
 }
 
 func initSettlement() {
+	chash = make(chan string)
 	go func() {
 		for {
 			hash, err := tron.GetNewBlock()
@@ -49,6 +52,7 @@ func initSettlement() {
 				log.Println(err)
 			}
 			log.Println("hash:" + hash)
+			chash <- hash
 			time.Sleep(10 * time.Second)
 		}
 	}()

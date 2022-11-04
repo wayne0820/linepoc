@@ -126,9 +126,9 @@
           "height": "sm",
           "action": {
             "type": "postback",
-            "label": "postback test",
-            "data": "hello",
-            "displayText": "postback test"
+            "label": "BIG",
+            "data": "BIG",
+            "displayText": "Place Bet BIG"
           }
         },
         {
@@ -136,9 +136,10 @@
           "style": "link",
           "height": "sm",
           "action": {
-            "type": "message",
-            "label": "action",
-            "text": "message test"
+            "type": "postback",
+            "label": "SMALL",
+            "data": "SMALL",
+            "displayText": "Place Bet SMALL"
           }
         },
         {

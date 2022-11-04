@@ -5,7 +5,25 @@ import (
 	"strings"
 )
 
+type Bet struct {
+	UserId string
+	Amount int
+	Status bool
+}
 
+type BetTransactions struct {
+	Bets []Bet
+}
+
+var BTs BetTransactions
+
+func Init() {
+	BTs.Bets = []Bet{}
+}
+
+func PlaceBet(chash chan string, result chan bool) {
+
+}
 
 func GetBSResult(hash string) (bool, error) {
 	hash = replaceEngChar(hash)
